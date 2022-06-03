@@ -67,7 +67,7 @@ const TournamentBoard: InferGetServerSidePropsType<
             </Paper>
           )}
         </Grid.Col>
-        {user ? (
+        {user && teams.some(t => t.name === user.name) ? (
           <Grid.Col sm={12} md={4}>
             <TaskSubmitter tasks={tasks} tournament={tournament} />
           </Grid.Col>

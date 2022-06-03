@@ -20,9 +20,11 @@ async function handleGet(
     return res;
   }
 
+  const cookie = req.cookies["team_login"]
+
   await prisma.cookie.delete({
     where: {
-      teamId,
+      cookie,
     },
   });
 

@@ -70,7 +70,7 @@ async function handlePost(
 
   const hint = await prisma.task.findFirst({
     where: {
-      id: taskId,
+      id: Number.parseInt(taskId),
     },
     select: {
       hintId: true,

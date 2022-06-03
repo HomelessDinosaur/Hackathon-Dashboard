@@ -13,7 +13,7 @@ services:
       - MYSQL_ROOT_HOST=%
 
   website:
-    image: website
+    image: website:final
     ports:
       - "80:80"
 volumes:

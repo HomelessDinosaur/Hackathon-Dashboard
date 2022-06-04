@@ -22,15 +22,13 @@ const DeleteTournamentTeamForm: FC<GlobalSettingsData> = ({
       fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-      })
-        .then(logNetworkCall("Unable to get all tournament teams"))
-        .then((response) => {
-          if (response.ok) {
-            response.json().then((teams) => setTournamentTeams(teams));
-          } else {
-            setTournamentTeams([]);
-          }
-        });
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((teams) => setTournamentTeams(teams));
+        } else {
+          setTournamentTeams([]);
+        }
+      });
     }
     getTournamentTeams();
   }, [tournament]);

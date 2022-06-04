@@ -22,15 +22,13 @@ const AddTournamentTeamForm: FC<GlobalSettingsData> = ({
       fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-      })
-        .then(logNetworkCall("Unable to get teams"))
-        .then((response) => {
-          if (response.ok) {
-            response.json().then((teams) => setTournamentTeams(teams));
-          } else {
-            setTournamentTeams([]);
-          }
-        });
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((teams) => setTournamentTeams(teams));
+        } else {
+          setTournamentTeams([]);
+        }
+      });
     }
     getTournamentTeams();
   }, [tournament]);
@@ -44,7 +42,7 @@ const AddTournamentTeamForm: FC<GlobalSettingsData> = ({
       warn("Cannot add an empty team to a tournament.");
       return;
     }
-    await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
+    fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamName: team }),

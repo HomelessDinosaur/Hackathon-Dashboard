@@ -12,6 +12,7 @@ const DeleteTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: task.id }),
     })
       .then(logNetworkCall("Unable to delete task. Please try again later."))
       .then((response) => {

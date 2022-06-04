@@ -14,7 +14,7 @@ const DeleteTeamForm: FC<GlobalSettingsData> = ({ refresh, teamNames }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamName: team }),
     })
-      .then(logNetworkCall("Unable to delete team"))
+      .then(logNetworkCall("Unable to delete team. Please try again later."))
       .then((response) => {
         if (response.ok) {
           setTeam("");

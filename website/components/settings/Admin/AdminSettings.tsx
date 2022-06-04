@@ -103,7 +103,6 @@ const AdminSettings = () => {
 };
 
 const SettingsSection: FC = ({ children }) => {
-  console.log(children);
   return (
     <Paper
       shadow="xs"

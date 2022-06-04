@@ -46,7 +46,7 @@ const CreateTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
       return;
     }
     const password = sha256(task.password);
-    await fetch(`${API_ENDPOINT}/task`, {
+    fetch(`${API_ENDPOINT}/task`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...task, password }),
@@ -57,6 +57,7 @@ const CreateTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
         if (response.ok) {
           refresh();
         }
+        return response;
       });
   };
 

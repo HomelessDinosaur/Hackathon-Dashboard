@@ -8,7 +8,7 @@ const DeleteTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
   const [task, setTask] = useState({ id: -1, name: "" });
 
   const handleDeleteTask = async (): Promise<void> => {
-    fetch(`${API_ENDPOINT}/task/${task.id}`, {
+    fetch(`${API_ENDPOINT}/task`, {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

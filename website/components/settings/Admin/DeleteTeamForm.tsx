@@ -8,17 +8,19 @@ const DeleteTeamForm: FC<GlobalSettingsData> = ({ refresh, teamNames }) => {
   const [team, setTeam] = useState("");
 
   const handleDeleteTeam = async (): Promise<void> => {
-    const response = await fetch(`${API_ENDPOINT}/teams/`, {
+    fetch(`${API_ENDPOINT}/teams/`, {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamName: team }),
-    });
-    logNetworkCall(response, "Unable to delete team");
-    if (response.ok) {
-      setTeam("");
-      refresh();
-    }
+    })
+      .then(logNetworkCall("Unable to delete team"))
+      .then((response) => {
+        if (response.ok) {
+          setTeam("");
+          refresh();
+        }
+      });
   };
   return (
     <Grid>

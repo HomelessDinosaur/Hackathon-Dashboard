@@ -19,16 +19,18 @@ const AddTournamentTeamForm: FC<GlobalSettingsData> = ({
 
   useEffect(() => {
     async function getTournamentTeams() {
-      const response = await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
+      fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-      });
-      if (response.ok) {
-        const teams = (await response.json()) as Team[];
-        setTournamentTeams(teams);
-      } else {
-        setTournamentTeams([]);
-      }
+      })
+        .then(logNetworkCall("Unable to get teams"))
+        .then((response) => {
+          if (response.ok) {
+            response.json().then((teams) => setTournamentTeams(teams));
+          } else {
+            setTournamentTeams([]);
+          }
+        });
     }
     getTournamentTeams();
   }, [tournament]);
@@ -42,13 +44,12 @@ const AddTournamentTeamForm: FC<GlobalSettingsData> = ({
       warn("Cannot add an empty team to a tournament.");
       return;
     }
-    const response = await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
+    await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamName: team }),
       credentials: "include",
-    });
-    logNetworkCall(response, `Unable to add ${team} to tournament`);
+    }).then(logNetworkCall(`Unable to add ${team} to tournament`));
   };
 
   return (

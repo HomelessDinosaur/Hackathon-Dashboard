@@ -66,16 +66,18 @@ const UserSettings: NextPage<UserSettingsProps> = ({ user }) => {
     if (user.password) {
       password = sha256(user.password);
     }
-    const response = await fetch(`${API_ENDPOINT}/teams`, {
+    fetch(`${API_ENDPOINT}/teams`, {
       body: JSON.stringify({ ...user, password }),
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       method: "PATCH",
-    });
-    logNetworkCall(response, "Failed to update user info");
-    if (response.ok) {
-      refresh();
-    }
+    })
+      .then(logNetworkCall("Failed to update user info"))
+      .then((response) => {
+        if (response.ok) {
+          refresh();
+        }
+      });
   };
 
   const validateUpdate = () => {

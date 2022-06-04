@@ -32,28 +32,32 @@ export const error = (message: string, silent = false): void => {
   }
 };
 
-export const logNetworkCall = async (response: Response, err: string) => {
+export const logNetworkCall = (err: string) => logResponse.bind(null, err);
+export const logResponse = async (err: string, response: Response) => {
   if (isInternalServerError(response.status)) {
     error(err);
   } else if (isNoContent(response.status)) {
-    return;
+    return response;
   }
-  const msg = (await response.json()).msg;
-  if (isSuccess(response.status)) {
-    success(msg);
-  } else if (
-    isConflict(response.status) ||
-    isNotFound(response.status) ||
-    isUnmodified(response.status)
-  ) {
-    warn(msg);
-  } else if (isInternalServerError(response.status)) {
-    error(err);
-  } else if (isNoContent(response.status)) {
-    return;
-  } else {
-    error("An unexpected error occured...");
+  const { msg } = await response.json();
+  if (msg) {
+    if (isSuccess(response.status)) {
+      success(msg);
+    } else if (
+      isConflict(response.status) ||
+      isNotFound(response.status) ||
+      isUnmodified(response.status)
+    ) {
+      warn(msg);
+    } else if (isInternalServerError(response.status)) {
+      error(err);
+    } else if (isNoContent(response.status)) {
+      return response;
+    } else {
+      error("An unexpected error occured...");
+    }
   }
+  return response;
 };
 // Status Codes
 

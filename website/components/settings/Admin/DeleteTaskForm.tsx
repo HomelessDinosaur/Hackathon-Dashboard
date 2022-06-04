@@ -8,16 +8,18 @@ const DeleteTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
   const [task, setTask] = useState({ id: -1, name: "" });
 
   const handleDeleteTask = async (): Promise<void> => {
-    const response = await fetch(`${API_ENDPOINT}/task/${task.id}`, {
+    fetch(`${API_ENDPOINT}/task/${task.id}`, {
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-    });
-    logNetworkCall(response, "Unable to delete task. Please try again later.");
-    if (response.ok) {
-      setTask({ id: -1, name: "" });
-      refresh();
-    }
+    })
+      .then(logNetworkCall("Unable to delete task. Please try again later."))
+      .then((response) => {
+        if (response.ok) {
+          setTask({ id: -1, name: "" });
+          refresh();
+        }
+      });
   };
 
   return (

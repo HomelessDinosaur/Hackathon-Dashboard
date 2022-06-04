@@ -19,16 +19,18 @@ const DeleteTournamentTeamForm: FC<GlobalSettingsData> = ({
 
   useEffect(() => {
     async function getTournamentTeams() {
-      const response = await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
+      fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-      });
-      if (response.ok) {
-        const teams = await response.json();
-        setTournamentTeams(teams);
-      } else {
-        setTournamentTeams([]);
-      }
+      })
+        .then(logNetworkCall("Unable to get all tournament teams"))
+        .then((response) => {
+          if (response.ok) {
+            response.json().then((teams) => setTournamentTeams(teams));
+          } else {
+            setTournamentTeams([]);
+          }
+        });
     }
     getTournamentTeams();
   }, [tournament]);
@@ -42,16 +44,18 @@ const DeleteTournamentTeamForm: FC<GlobalSettingsData> = ({
       warn("Cannot delete an empty team from a tournament.");
       return;
     }
-    const response = await fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
+    fetch(`${API_ENDPOINT}/teams/${tournament.id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamName: team }),
       credentials: "include",
-    });
-    if (response.ok) {
-      setTeam("");
-    }
-    await logNetworkCall(response, "Unable to delete team from tournament");
+    })
+      .then(logNetworkCall("Unable to delete team from tournament"))
+      .then((response) => {
+        if (response.ok) {
+          setTeam("");
+        }
+      });
   };
 
   return (

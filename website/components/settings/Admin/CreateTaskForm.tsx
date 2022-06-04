@@ -46,16 +46,18 @@ const CreateTaskForm: FC<GlobalSettingsData> = ({ refresh, tasks }) => {
       return;
     }
     const password = sha256(task.password);
-    const response = await fetch(`${API_ENDPOINT}/task`, {
+    await fetch(`${API_ENDPOINT}/task`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...task, password }),
       credentials: "include",
-    });
-    logNetworkCall(response, "Unable to create task. Please try again later");
-    if (response.ok) {
-      refresh();
-    }
+    })
+      .then(logNetworkCall("Unable to create task. Please try again later"))
+      .then((response) => {
+        if (response.ok) {
+          refresh();
+        }
+      });
   };
 
   return (

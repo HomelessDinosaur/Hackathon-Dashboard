@@ -29,7 +29,7 @@ const CreateTournamentForm: FC<GlobalSettingsData> = ({ refresh }) => {
       warn("Tournament end dates should not be in the past.");
       return;
     }
-    const response = await fetch(`${API_ENDPOINT}/tournament`, {
+    fetch(`${API_ENDPOINT}/tournament`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -37,14 +37,15 @@ const CreateTournamentForm: FC<GlobalSettingsData> = ({ refresh }) => {
         endTime: convertToTimeString(endDate, endTime),
       } as Omit<Tournament, "id">),
       credentials: "include",
-    });
-    logNetworkCall(
-      response,
-      "Unable to create tournament. Please try again later."
-    );
-    if (response.ok) {
-      refresh();
-    }
+    })
+      .then(
+        logNetworkCall("Unable to create tournament. Please try again later.")
+      )
+      .then((response) => {
+        if (response.ok) {
+          refresh();
+        }
+      });
   };
 
   return (

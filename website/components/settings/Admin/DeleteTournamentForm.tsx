@@ -14,22 +14,20 @@ const DeleteTournamentForm: FC<GlobalSettingsData> = ({
   });
 
   const handleDeleteTournament = async (): Promise<void> => {
-    const response = await fetch(
-      `${API_ENDPOINT}/tournament/${tournament.id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    logNetworkCall(
-      response,
-      "Unable to delete tournament. Please try again later"
-    );
-    if (response.ok) {
-      setTournament({ id: -1, name: "" });
-      refresh();
-    }
+    fetch(`${API_ENDPOINT}/tournament/${tournament.id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(
+        logNetworkCall("Unable to delete tournament. Please try again later")
+      )
+      .then((response) => {
+        if (response.ok) {
+          setTournament({ id: -1, name: "" });
+          refresh();
+        }
+      });
   };
 
   return (

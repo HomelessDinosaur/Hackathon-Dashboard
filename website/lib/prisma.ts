@@ -24,6 +24,7 @@ type Cookies = Record<string, string>;
 
 export async function getTeamIdFromCookies(cookies: Cookies): Promise<number> {
   const cookie = cookies["team_login"];
+  if (!cookie) return 0;
   const results = await prisma.cookie.findUnique({
     where: {
       cookie,

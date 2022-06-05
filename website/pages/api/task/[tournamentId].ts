@@ -28,13 +28,13 @@ async function handleGet(
     select: {
       completedTask: {
         select: {
-          id: true,
+          taskId: true,
         },
       },
     },
   });
 
-  const ids = result?.completedTask.map((task) => task.id) || [];
+  const ids = result?.completedTask.map((task) => task.taskId) || [];
   res.status(200).json(ids);
 }
 

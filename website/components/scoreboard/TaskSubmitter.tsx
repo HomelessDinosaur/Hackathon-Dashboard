@@ -22,7 +22,7 @@ const TaskSubmitter: FC<TaskSubmitterProps> = ({ tasks, tournament }) => {
     )
   );
   const [completeTaskData, setCompleteTaskData] = useState<CompleteTaskData>({
-    taskData: [],
+    taskData: tasks.map(t => t.id),
     hintData: {},
   });
 
@@ -56,8 +56,6 @@ const TaskSubmitter: FC<TaskSubmitterProps> = ({ tasks, tournament }) => {
             ),
           });
         }
-      } else {
-        setCompleteTaskData({ taskData: [], hintData: {} });
       }
     };
     getCompleteTaskData();
